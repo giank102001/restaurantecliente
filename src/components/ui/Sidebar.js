@@ -16,14 +16,14 @@ const Sidebar = () => {
           <NavLink
             className={({ isActive }) => (isActive ? "text-yellow-500 p-1 block hover:bg-yellow-500 hover:text-gray-900" : "p-1 text-gray-400 block hover:bg-yellow-500 hover:text-gray-900")}
             end
-            to="/"
+            to="/admin"
           >
             Ordenes
           </NavLink>
           <NavLink
             className={({ isActive }) => (isActive ? "text-yellow-500 p-1 block hover:bg-yellow-500 hover:text-gray-900" : "p-1 text-gray-400 block hover:bg-yellow-500 hover:text-gray-900")}
             end
-            to="/menu"
+            to="/admin/menu"
           >
             Menu
           </NavLink>
