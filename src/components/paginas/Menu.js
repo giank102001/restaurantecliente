@@ -5,7 +5,7 @@ import { motion } from 'framer-motion';
 
 import Platillo from '../ui/Platillo';
 
-const Menu = ({isVisible}) => {
+const Menu = () => {
 
   // definir el state para los platillos 
   const [platillos, setPlatillos] = useState([])
