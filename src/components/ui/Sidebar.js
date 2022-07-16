@@ -1,7 +1,10 @@
-import React from 'react'
-import { NavLink } from 'react-router-dom'
+import React, { useContext } from "react";
+import { NavLink } from "react-router-dom";
+
+import { FirebaseContext } from "../../firebase";
 
 const Sidebar = () => {
+  const { usuarioAdmin, setUsuarioAdmin } = useContext(FirebaseContext);
   return (
     <div className="md:w-2/5 xl:w-1/5 bg-gray-800 md:fixed md:min-h-screen">
       <div className="p-6">
@@ -14,16 +17,24 @@ const Sidebar = () => {
 
         <nav className="mt-10">
           <NavLink
-            className={({ isActive }) => (isActive ? "text-yellow-500 p-1 block hover:bg-yellow-500 hover:text-gray-900" : "p-1 text-gray-400 block hover:bg-yellow-500 hover:text-gray-900")}
+            className={({ isActive }) =>
+              isActive
+                ? "text-yellow-500 p-1 block hover:bg-yellow-500 hover:text-gray-900"
+                : "p-1 text-gray-400 block hover:bg-yellow-500 hover:text-gray-900"
+            }
             end
-            to="/admin"
+            to="/admin/dashboard/"
           >
             Ordenes
           </NavLink>
           <NavLink
-            className={({ isActive }) => (isActive ? "text-yellow-500 p-1 block hover:bg-yellow-500 hover:text-gray-900" : "p-1 text-gray-400 block hover:bg-yellow-500 hover:text-gray-900")}
+            className={({ isActive }) =>
+              isActive
+                ? "text-yellow-500 p-1 block hover:bg-yellow-500 hover:text-gray-900"
+                : "p-1 text-gray-400 block hover:bg-yellow-500 hover:text-gray-900"
+            }
             end
-            to="/admin/menu"
+            to="/admin/dashboard/menu"
           >
             Menu
           </NavLink>
@@ -31,6 +42,6 @@ const Sidebar = () => {
       </div>
     </div>
   );
-}
+};
 
-export default Sidebar
+export default Sidebar;
