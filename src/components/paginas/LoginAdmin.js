@@ -1,13 +1,12 @@
-import React, { useState, useEffect, useContext } from "react";
+import React, {  useContext } from "react";
 import { useNavigate } from 'react-router';
 import { useFormik } from "formik";
-import * as Yup from "yup";
 import { LockClosedIcon } from "@heroicons/react/solid";
 
 import { FirebaseContext } from "../../firebase";
 
 const LoginAdmin = () => {
-  const { firebase, usuarioAdmin, setUsuarioAdmin } = useContext(FirebaseContext);
+  const { firebase, setUsuarioAdmin } = useContext(FirebaseContext);
 
 
   //navegacion
