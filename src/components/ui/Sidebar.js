@@ -1,11 +1,8 @@
-import React, { useContext } from "react";
+import React, {  } from "react";
 import { NavLink } from "react-router-dom";
 
-import { FirebaseContext } from "../../firebase";
 
 const Sidebar = () => {
-  const { usuarioAdmin } = useContext(FirebaseContext);
-  console.log(usuarioAdmin)
   return (
     <div className="md:w-2/5 xl:w-1/5 bg-gray-800 md:fixed md:min-h-screen">
       <div className="p-6">

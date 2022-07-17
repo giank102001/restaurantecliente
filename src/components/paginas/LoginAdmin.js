@@ -1,37 +1,59 @@
-import React, {  useContext } from "react";
-import { useNavigate } from 'react-router';
+import React, { useContext, useState, useEffect } from "react";
+import { useNavigate } from "react-router";
 import { useFormik } from "formik";
 import { LockClosedIcon } from "@heroicons/react/solid";
 
 import { FirebaseContext } from "../../firebase";
 
 const LoginAdmin = () => {
-  const { firebase, setUsuarioAdmin } = useContext(FirebaseContext);
+  const { firebase, setUsuarioAdmin, usuarioAdmin } =
+    useContext(FirebaseContext);
 
+  // errores de firebase
+  const [errorFirebase, setErrorFirebase] = useState("");
 
   //navegacion
   let navigate = useNavigate();
+
+  useEffect(() => {
+    const usuarioLogeado = async () => {
+      await firebase.auth().onAuthStateChanged((currentUser) => {
+        if (currentUser != null) {
+          setUsuarioAdmin(currentUser);
+          navigate("/admin/dashboard/");
+        } else {
+          console.log("No hay usuario logeado");
+        }
+      });
+    };
+    usuarioLogeado();
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [usuarioAdmin]);
 
   const formik = useFormik({
     initialValues: {
       email: "",
       password: "",
     },
-    onSubmit: (usuario) => {
-      const iniciarSesion = (usuario) => {
-        try {
-          firebase
-            .auth()
-            .signInWithEmailAndPassword(usuario.email, usuario.password)
-            .then((usuarioFirebase) => {
-              setUsuarioAdmin(usuarioFirebase.user);
-              navigate("/admin/dashboard/")
-            });
-        } catch (error) {
-          console.log(error);
-        }
-      };
-      iniciarSesion(usuario);
+    onSubmit: async (usuario) => {
+      try {
+        await firebase
+          .auth()
+          .signInWithEmailAndPassword(usuario.email, usuario.password)
+          .then((usuarioFirebase) => {
+            setUsuarioAdmin(usuarioFirebase.user);
+          })
+          .catch((error) => {
+            const errorCode = error.code;
+            const errorMessage = error.message;
+            setErrorFirebase(errorCode);
+            console.log("error de codigo", errorCode);
+            console.log("mensaje de error", errorMessage);
+          });
+      } catch (error) {
+        console.log(error);
+      }
     },
   });
 
@@ -60,6 +82,17 @@ const LoginAdmin = () => {
                   className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
                   placeholder="Email address"
                 />
+
+                {errorFirebase === "auth/user-not-found" && (
+                  <div
+                    className="bg-red-100 border-l-4 border-red-500 text-red-700 p-4 mb-5"
+                    role="alert"
+                  >
+                    <p className="font-bold">
+                      Hubo un error: El correo no esta registrado
+                    </p>
+                  </div>
+                )}
               </div>
               <div>
                 <label htmlFor="password" className="sr-only">
@@ -75,6 +108,17 @@ const LoginAdmin = () => {
                   className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-b-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
                   placeholder="Password"
                 />
+
+                {errorFirebase === "auth/wrong-password" && (
+                  <div
+                    className="bg-red-100 border-l-4 border-red-500 text-red-700 p-4 mb-5"
+                    role="alert"
+                  >
+                    <p className="font-bold">
+                      Hubo un error: La contraseña no es correcta
+                    </p>
+                  </div>
+                )}
               </div>
             </div>
 
