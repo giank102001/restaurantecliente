@@ -23,7 +23,6 @@ function Dashboard() {
       navigate("/admin/");
     } else {
       console.log("Si hay algo");
-      console.log(usuarioAdmin._delegate.email);
     }
 
     // eslint-disable-next-line react-hooks/exhaustive-deps

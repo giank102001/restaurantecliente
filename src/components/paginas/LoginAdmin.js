@@ -1,4 +1,4 @@
-import React, { useContext, useState, useEffect } from "react";
+import React, { useContext, useState } from "react";
 import { useNavigate } from "react-router";
 import { useFormik } from "formik";
 import { LockClosedIcon } from "@heroicons/react/solid";
@@ -6,7 +6,7 @@ import { LockClosedIcon } from "@heroicons/react/solid";
 import { FirebaseContext } from "../../firebase";
 
 const LoginAdmin = () => {
-  const { firebase, setUsuarioAdmin, usuarioAdmin } =
+  const { firebase, setUsuarioAdmin } =
     useContext(FirebaseContext);
 
   // errores de firebase
@@ -14,22 +14,6 @@ const LoginAdmin = () => {
 
   //navegacion
   let navigate = useNavigate();
-
-  useEffect(() => {
-    const usuarioLogeado = async () => {
-      await firebase.auth().onAuthStateChanged((currentUser) => {
-        if (currentUser != null) {
-          setUsuarioAdmin(currentUser);
-          navigate("/admin/dashboard/");
-        } else {
-          console.log("No hay usuario logeado");
-        }
-      });
-    };
-    usuarioLogeado();
-
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [usuarioAdmin]);
 
   const formik = useFormik({
     initialValues: {
@@ -43,6 +27,7 @@ const LoginAdmin = () => {
           .signInWithEmailAndPassword(usuario.email, usuario.password)
           .then((usuarioFirebase) => {
             setUsuarioAdmin(usuarioFirebase.user);
+            navigate("/admin/dashboard/");
           })
           .catch((error) => {
             const errorCode = error.code;
